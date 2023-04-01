@@ -1,0 +1,59 @@
+@import './configs.scss';
+
+.container-navigation {
+    ul {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        padding: 0;
+        margin: 10px 0;
+
+        li {
+            list-style: none;
+            cursor: pointer;
+
+            &.disabled{
+                cursor: auto;
+            }
+
+            .iconeNav {
+                margin-right: 0;
+                width: 24px;
+                height: 24px;
+            }
+
+            .mini {
+                width: 24px;
+                height: 24px;
+                border-color: $greyColor1;
+
+                &.selected {
+                    border-color: $primaryColor;
+                }
+
+                img {
+                    width: 19px;
+                    height: 19px;
+                }
+            }
+
+            @media screen and (min-width: $desktopBreakpoint) {
+                .iconeNav {
+                    margin-right: 30px;
+                    width: 35px;
+                    height: 35px;
+                }
+
+                .mini {
+                    width: 35px;
+                    height: 35px;
+
+                    img {
+                        width: 30px;
+                        height: 30px;
+                    }
+                }
+            }
+        }
+    }
+}
