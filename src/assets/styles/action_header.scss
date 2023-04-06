@@ -11,6 +11,10 @@
     span{
         cursor: pointer;
         font-family: $fontBold;
+
+        &.disabled{
+            cursor: not-allowed;
+        }
     }
 
     strong{
