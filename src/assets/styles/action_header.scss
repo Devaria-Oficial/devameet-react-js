@@ -1,0 +1,39 @@
+@import './configs.scss';
+
+.container-action-header{
+    width: 100%;
+    border-bottom: 0.2px solid $greyColor4;
+    display: flex;
+    padding: 16px;
+    align-items: center;
+    justify-content: space-between;
+
+    span{
+        cursor: pointer;
+        font-family: $fontBold;
+    }
+
+    strong{
+        font-family: $fontBold;
+        font-size: 16px;
+        line-height: 24px;
+        letter-spacing: 0.01em;
+        color: $greyColor5;
+    }
+
+    .principal{
+        color: $primaryColor;
+    }
+
+    @media screen and (min-width: $desktopBreakpoint) {
+        padding: 24px 0;
+
+        span{
+            font-size: 16px;
+        }
+
+        strong {
+            font-size: 18px;
+        }
+    }
+}

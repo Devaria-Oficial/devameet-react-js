@@ -10,20 +10,24 @@ export const Profile = () => {
 
     const [image, setImage] = useState('');
 
+    const mobile = window.innerWidth <= 992;
+
     return (
         <>
-            <Header />
+            {!mobile && <Header />}
             <div className="container-profile">
                 <ActionHeader />
-                <AvatarInput image={image} setImage={setImage}/>
+                <AvatarInput image={image} setImage={setImage} />
                 <div className="input">
-                    <span>Nome</span>
-                    <input type="text" placeholder="Informe seu nome"/>
-                    <img src={clearIcon} alt="limpar"/>
+                    <div>
+                        <span>Nome</span>
+                        <input type="text" placeholder="Informe seu nome" />
+                        <img src={clearIcon} alt="limpar" />
+                    </div>
                 </div>
                 <div className="logout">
                     <div>
-                        <img src={logoutIcon} alt="Sair"/>
+                        <img src={logoutIcon} alt="Sair" />
                         <span>Sair</span>
                     </div>
                 </div>
