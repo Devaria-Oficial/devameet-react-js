@@ -3,24 +3,163 @@
 .container-principal {
     width: 100%;
     display: flex;
-    flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
     flex: 1;
 
-    .container-meet{
+    .container-meet {
         width: 100%;
+        height: 100%;
         display: flex;
         flex-direction: column;
-        flex:1;
         align-items: flex-start;
         justify-content: flex-start;
         background-color: white;
     }
 
+    .container-objects {
+        display: none;
+    }
+
     @media screen and (min-width: $desktopBreakpoint) {
-        .container-meet{
+        .container-meet {
             width: 25%;
+
+            .form {
+                width: 100%;
+                margin-top: 16px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                span {
+                    cursor: pointer;
+                    text-decoration: underline;
+                    margin-right: 20px;
+                    font-weight: 600;
+                    font-size: 16px;
+                    line-height: 120%;
+                    letter-spacing: 0.01em;
+                    color: $primaryColor;
+                }
+
+                button {
+                    margin: 0;
+                    width: 40%;
+                }
+            }
+        }
+
+        .container-objects {
+            display: flex;
+            flex: 1;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+
+            .center {
+                display: flex;
+                align-items: flex-start;
+
+                .grid {
+                    width: 640px;
+                    height: 640px;
+                    background-color: white;
+                    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.14);
+                    position: relative;
+
+                    .line {
+                        position: absolute;
+                        height: 0;
+                        margin: 0;
+
+                        &.row {
+                            width: 100%;
+                            left: 0;
+                            border-bottom: 0.5px solid $primaryColor;
+
+                            &.one {
+                                top: 12.5%;
+                            }
+
+                            &.two {
+                                top: 25%;
+                            }
+
+                            &.three {
+                                top: 37.5%;
+                            }
+
+                            &.four {
+                                top: 50%;
+                            }
+
+                            &.five {
+                                top: 62.5%;
+                            }
+
+                            &.six {
+                                top: 75%;
+                            }
+
+                            &.seven {
+                                top: 87.5%;
+                            }
+                        }
+
+                        &.column {
+                            height: 100%;
+                            top: 0;
+                            border-left: 0.5px solid $primaryColor;
+
+                            &.one {
+                                left: 12.5%;
+                            }
+
+                            &.two {
+                                left: 25%;
+                            }
+
+                            &.three {
+                                left: 37.5%;
+                            }
+
+                            &.four {
+                                left: 50%;
+                            }
+
+                            &.five {
+                                left: 62.5%;
+                            }
+
+                            &.six {
+                                left: 75%;
+                            }
+
+                            &.seven {
+                                left: 87.5%;
+                            }
+                        }
+                    }
+                }
+
+                .actions {
+                    margin-left: 16px;
+
+                    div {
+                        width: 48px;
+                        height: 48px;
+                        background-color: $greyColor4;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 4px;
+                        margin-bottom: 16px;
+                    }
+                }
+            }
+
+
         }
     }
 }

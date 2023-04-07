@@ -75,12 +75,21 @@ button{
     color: white;
     font-size: 16px;
     cursor: pointer;
+  
 
     @media screen and (min-width: $desktopBreakpoint) {
         background-color: $greyColor;
 
         &:hover{
             background-color: $primaryColor;
+        }
+
+        &.disabled{
+            cursor: not-allowed;
+
+            &:hover{
+                background-color: $greyColor;
+            }
         }
     }
 }
