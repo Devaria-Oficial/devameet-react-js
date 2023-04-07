@@ -26,37 +26,37 @@
                 color: $primaryColor;
             }
 
-            .line{
+            .line {
                 margin: 16px 0;
                 width: 100%;
                 height: 0;
                 border-bottom: 1px solid #DADADA;
             }
 
-            .avatars-scroll{
+            .avatars-scroll {
                 overflow-y: scroll;
                 max-height: 200px;
 
-                &::-webkit-scrollbar{
+                &::-webkit-scrollbar {
                     width: 6px;
                 }
-            
-                &::-webkit-scrollbar-track{
+
+                &::-webkit-scrollbar-track {
                     background: $primaryColorWithOpacity;
                 }
-            
-                &::-webkit-scrollbar-thumb{
+
+                &::-webkit-scrollbar-thumb {
                     background: $primaryColor;
                     border-radius: 8px;
                 }
 
-                .avatars{
+                .avatars {
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     flex-wrap: wrap;
 
-                    .container-avatar{
+                    .container-avatar {
                         margin: 3px;
                         width: 29.8%;
                         height: 23vw;
@@ -67,32 +67,53 @@
                         border: 2px solid $primaryColor4;
                         border-radius: 4px;
 
-                        &.selected{
+                        &.selected {
                             border-color: $primaryColor;
                         }
 
-                        img{
+                        img {
                             height: 90%;
                         }
                     }
                 }
             }
 
-            .actions{
+            .actions {
                 margin-top: 16px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
 
-                span{
+                span {
                     cursor: pointer;
                     text-decoration: underline;
                     margin-right: 20px;
                 }
 
-                button{
+                button {
                     margin: 0;
                     width: 50%;
+                }
+            }
+
+            .container {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+
+                span {
+                    font-weight: 700;
+                    font-size: 18px;
+                    line-height: 120%;
+                    margin-bottom: 8px;
+                }
+
+                p {
+                    font-weight: 400;
+                    font-size: 16px;
+                    line-height: 24px;
                 }
             }
         }
@@ -100,25 +121,26 @@
 
     @media screen and (min-width: $desktopBreakpoint) {
         margin-top: 100px;
-        
-        .modal-content{
-            .modal-body{
-                .content{
-                    .avatars-scroll{
+
+        .modal-content {
+            .modal-body {
+                .content {
+                    .avatars-scroll {
                         height: 370px;
-                        .avatars{
-                            .container-avatar{
+
+                        .avatars {
+                            .container-avatar {
                                 width: 28%;
                                 height: 9.5vw;
                                 margin: 8px;
                                 cursor: pointer;
-                                
-                                &:hover{
+
+                                &:hover {
                                     border-color: $greyColor;
                                 }
 
-                                &.selected{
-                                    &:hover{
+                                &.selected {
+                                    &:hover {
                                         border-color: $primaryColor;
                                     }
                                 }
