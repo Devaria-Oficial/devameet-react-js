@@ -1,0 +1,72 @@
+@import './configs.scss';
+
+.container-object-picker{
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    margin-left: 16px;
+    margin-top: 16px;
+    padding-bottom: 16px;
+    border-bottom: 0.5px solid $greyColor4;
+
+    .action{
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        img, span{
+            margin-right: 8px;
+        }
+    }
+
+    .objects{
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 10px;
+        justify-content: space-between;
+
+        div{
+            background-color: $primaryColor4;
+            cursor: pointer;
+            width: 31%;
+            height: 104px;
+            margin: 6px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid transparent;
+            position: relative;
+
+            &:hover {
+                border-color: $greyColor3;
+
+                .add{
+                    display: block;
+                }
+            }
+
+            &.selected {
+                border-color: $primaryColor;
+            }
+
+            .object {
+                height: 90%;
+                object-fit: contain;
+
+                &.large{
+                    width: 90%;
+                    object-fit: fill;
+                }
+            }
+
+            .add{
+                display: none;
+                position: absolute;
+                align-self: center;
+                justify-content: center;
+
+                
+            }
+        }
+    }
+}
