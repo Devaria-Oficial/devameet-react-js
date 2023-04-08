@@ -1,10 +1,8 @@
-import { MeetAddEditHeader } from "./MeetAddEditHeader";
-import thrashIcon from '../../assets/images/trash_object.svg';
-import rightIcon from '../../assets/images/rotate_right.svg';
-import leftIcon from '../../assets/images/rotate_left.svg';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MeetServices } from "../../services/MeetServices";
+import { MeetAddEditHeader } from "./MeetAddEditHeader";
+import { MeetObjectsRoom } from "./MeetObjectsRoom";
 
 const meetServices = new MeetServices();
 
@@ -55,39 +53,7 @@ export const MeetAdd = () => {
                         className={isFormInvalid ? 'disabled' : ''}>Salvar</button>
                 </div>
             </div>
-            <div className="container-objects">
-                <div className="center">
-                    <div className="grid">
-                        <div className="line row one" />
-                        <div className="line row two" />
-                        <div className="line row three" />
-                        <div className="line row four" />
-                        <div className="line row five" />
-                        <div className="line row six" />
-                        <div className="line row seven" />
-                        <div className="line column one" />
-                        <div className="line column two" />
-                        <div className="line column three" />
-                        <div className="line column four" />
-                        <div className="line column five" />
-                        <div className="line column six" />
-                        <div className="line column seven" />
-
-                    </div>
-                    <div className="actions">
-                        <div>
-                            <img src={thrashIcon} />
-                        </div>
-                        <div>
-                            <img src={rightIcon} />
-                        </div>
-                        <div>
-                            <img src={leftIcon} />
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+            <MeetObjectsRoom />
         </div>
     );
 }
