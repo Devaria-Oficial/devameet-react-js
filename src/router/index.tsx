@@ -5,6 +5,7 @@ import { Profile } from "../views/Profile";
 import {Register} from '../views/Register';
 import { MeetAddView } from "../views/MeetAdd";
 import { MeetEditView } from "../views/MeetEdit";
+import { LinkView } from "../views/Link";
 
 export const getRouter = (token: string) => {
     if(!token){
@@ -48,6 +49,12 @@ export const getRouter = (token: string) => {
                 path: '/edit/:meetId',
                 id: 'edit',
                 element: <MeetEditView />
+            });
+        }else{
+            router.push({
+                path: '/link',
+                id: 'link',
+                element: <LinkView />
             });
         }
 
