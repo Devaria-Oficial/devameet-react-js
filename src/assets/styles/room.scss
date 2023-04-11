@@ -1,0 +1,83 @@
+@import './configs.scss';
+
+.container-room {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: stretch;
+
+    background-color: $primaryColorWithOpacity;
+    background-image: url('../images/background.svg');
+    background-size: cover;
+
+    .empty {
+        width: 100%;
+        height: 90vw;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.14), 0px 2px 1px rgba(0, 0, 0, 0.12), 0px 1px 3px rgba(0, 0, 0, 0.2);
+
+        img {
+            width: 70%;
+        }
+
+        p {
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 40px;
+        }
+    }
+
+    .resume {
+        margin: 16px;
+
+        span {
+            font-weight: 600;
+            font-size: 12px;
+            line-height: 17px;
+        }
+
+        p {
+            margin: 0;
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 22px;
+        }
+
+        img{
+            cursor: pointer;
+            margin-left: 4px;
+        }
+    }
+
+    @media screen and (min-width: $desktopBreakpoint) {
+        background-color: transparent;
+        background-image: none;
+        flex-direction: row;
+        align-items: center;
+
+        .empty {
+            width: 40%;
+            height: 40vw;
+
+            p {
+                font-size: 20px;
+            }
+        }
+
+        .resume {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            align-items: flex-start;
+            justify-content: flex-end;
+            margin: 0;
+            margin-left: 24px;
+            padding-bottom: 24px;
+        }
+    }
+}

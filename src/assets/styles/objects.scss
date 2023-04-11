@@ -1,7 +1,116 @@
 @import './configs.scss';
 
 .container-objects {
-    display: none;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+
+    .center {
+        display: flex;
+        align-items: flex-start;
+
+        .grid {
+            width: 320px;
+            height: 320px;
+            background-color: white;
+            box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.14);
+            position: relative;
+
+            .preview {
+                position: absolute;
+                z-index: 100 !important;
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                height: 100%;
+                align-items: center;
+                justify-content: center;
+                background-color: $greyColor5WithOpacity;
+
+                img {
+                    width: 68px;
+                    height: 68px;
+                    position: relative;
+                    margin-bottom: 3%;
+                    cursor: auto;
+                }
+
+                button {
+                    width: 60%;
+                    border: 2px solid white;
+                    background-color: transparent;
+                }
+            }
+
+            img {
+                position: absolute;
+
+                &.row-one {
+                    top: 0%;
+                }
+
+                &.row-two {
+                    top: 12.5%;
+                }
+
+                &.row-three {
+                    top: 25%;
+                }
+
+                &.row-four {
+                    top: 37.5%;
+                }
+
+                &.row-five {
+                    top: 50%;
+                }
+
+                &.row-six {
+                    top: 62.5%;
+                }
+
+                &.row-seven {
+                    top: 75%;
+                }
+
+                &.row-eight {
+                    top: 87.5%;
+                }
+
+                &.column-one {
+                    left: 0%;
+                }
+
+                &.column-two {
+                    left: 12.5%;
+                }
+
+                &.column-three {
+                    left: 25%;
+                }
+
+                &.column-four {
+                    left: 37.5%;
+                }
+
+                &.column-five {
+                    left: 50%;
+                }
+
+                &.column-six {
+                    left: 62.5%;
+                }
+
+                &.column-seven {
+                    left: 75%;
+                }
+
+                &.column-eight {
+                    left: 87.5%;
+                }
+            }
+        }
+    }
 
     @media screen and (min-width: $desktopBreakpoint) {
         display: flex;
@@ -11,9 +120,6 @@
         align-items: center;
 
         .center {
-            display: flex;
-            align-items: flex-start;
-
             .grid {
                 width: 640px;
                 height: 640px;
@@ -22,26 +128,14 @@
                 position: relative;
 
                 .preview {
-                    position: absolute;
-                    z-index: 100 !important;
-                    display: flex;
-                    flex-direction: column;
-                    width: 100%;
-                    height: 100%;
-                    align-items: center;
-                    justify-content: center;
-                    background-color: $greyColor5WithOpacity;
-
-                    img{
-                        position: relative;
-                        margin-bottom: 3%;
-                        cursor: auto;
+                    img {
+                        width: 120px;
+                        height: 120px;
                     }
 
-                    button{
+                    button {
                         width: 35%;
-                        border: 2px solid white;
-                        background-color: transparent;
+
                     }
                 }
 
@@ -118,81 +212,6 @@
                         }
                     }
                 }
-
-                img{
-                    position: absolute;
-                    cursor: pointer;
-
-                    &.selected{
-                        filter: invert(25%) sepia(40%) saturate(4000%) hue-rotate(709deg) brightness(80%) contrast(104%); 
-                    }
-
-                    &.row-one{
-                        top: 0%;
-                    }
-
-                    &.row-two{
-                        top: 12.5%;
-                    }
-
-                    &.row-three{
-                        top: 25%;
-                    }
-
-                    &.row-four{
-                        top: 37.5%;
-                    }
-
-                    &.row-five{
-                        top: 50%;
-                    }
-
-                    &.row-six{
-                        top: 62.5%;
-                    }
-
-                    &.row-seven{
-                        top: 75%;
-                    }
-
-                    &.row-eight{
-                        top: 87.5%;
-                    }
-
-                    &.column-one{
-                        left: 0%;
-                    }
-
-                    &.column-two{
-                        left: 12.5%;
-                    }
-
-                    &.column-three{
-                        left: 25%;
-                    }
-
-                    &.column-four{
-                        left: 37.5%;
-                    }
-
-                    &.column-five{
-                        left: 50%;
-                    }
-
-                    &.column-six{
-                        left: 62.5%;
-                    }
-
-                    &.column-seven{
-                        left: 75%;
-                    }
-
-                    &.column-eight{
-                        left: 87.5%;
-                    }
-                }
-
-                
             }
 
             .actions {
@@ -209,7 +228,7 @@
                     margin-bottom: 16px;
                     cursor: auto;
 
-                    &.active{
+                    &.active {
                         cursor: pointer;
                         background-color: $primaryColor;
                     }

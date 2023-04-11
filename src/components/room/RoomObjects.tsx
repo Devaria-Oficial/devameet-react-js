@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import linkIcon from '../../assets/images/link_preview.svg';
 
 
@@ -8,12 +9,43 @@ type RoomObjectsProps = {
 
 export const RoomObjects : React.FC<RoomObjectsProps> = ({objects, enterRoom}) =>{
 
+    const [objectsWithWidth, setObjectsWithWidth] = useState<Array<any>>([]);
+    const mobile = window.innerWidth <= 992;
+
     const getImageFromObject = (object: any) => {
         if (object && object._id) {
             const path = `../../assets/objects/${object?.type}/${object.name}${object.orientation? "_"+ object.orientation : ''}.png`;
             const imageUrl = new URL(path, import.meta.url);
+
+            if(mobile){
+                let img = new Image();
+                img.onload = () => {
+                    const exist = objectsWithWidth.find((o:any) => o.name == object.name);
+                    if(!exist){
+                        const newObjects = [...objectsWithWidth, {name: object.name, width: img.width}];
+                        setObjectsWithWidth(newObjects);
+                    }
+                }
+
+                img.src = imageUrl.href;
+            }
+
             return imageUrl.href;
         }
+    }
+
+    const getObjectStyle = (object: any) => {
+        const style = {zIndex: object.zindex} as any;
+
+        if(mobile){
+            const obj = objectsWithWidth.find((o:any) => o.name == object.name);
+            if(obj){
+                const width = obj.width * 0.5;
+                style.width = width+'px';
+            }
+        }
+
+        return style;
     }
 
     const getClassFromObject = (object: any) => {
@@ -105,7 +137,7 @@ export const RoomObjects : React.FC<RoomObjectsProps> = ({objects, enterRoom}) =
                             <img key={object._id} 
                                 src={getImageFromObject(object)}
                                 className={getClassFromObject(object)}
-                                style={{zIndex: object.zindex}}
+                                style={getObjectStyle(object)}
                                 />)
                     }
                     <div className="preview">
