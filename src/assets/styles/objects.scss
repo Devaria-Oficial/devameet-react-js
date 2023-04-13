@@ -125,10 +125,18 @@
                     margin-bottom: 10px;
                     padding: 4px 8px;
 
+                    &.muted{
+                        border-color: $muted;
+                    }
+
                     span {
                         font-weight: 500;
                         line-height: 11px;
                         color: $primaryColor4;
+
+                        &.muted{
+                            color: $muted;
+                        }
                     }
                 }
 
@@ -199,6 +207,15 @@
                 &.column-eight {
                     left: 87%;
                 }
+            }
+
+            .audio{
+                position: absolute;
+                cursor: pointer;
+                top: 88%;
+                left: 88%;
+                z-index: 25;
+                width: 32px;
             }
         }
     }
@@ -302,6 +319,12 @@
                             left: 87.5%;
                         }
                     }
+                }
+
+                .audio{
+                    top: 90%;
+                    left: 90%;
+                    width: 48px;
                 }
             }
 
