@@ -4,17 +4,19 @@ import linkIcon from '../../assets/images/link_preview.svg';
 
 type RoomObjectsProps = {
     objects: Array<any>,
+    connectedUsers: Array<any>,
+    me: any,
     enterRoom():void
 }
 
-export const RoomObjects : React.FC<RoomObjectsProps> = ({objects, enterRoom}) =>{
+export const RoomObjects : React.FC<RoomObjectsProps> = ({objects, enterRoom, connectedUsers, me}) =>{
 
     const [objectsWithWidth, setObjectsWithWidth] = useState<Array<any>>([]);
     const mobile = window.innerWidth <= 992;
 
-    const getImageFromObject = (object: any) => {
+    const getImageFromObject = (object: any, isAvatar: boolean) => {
         if (object && object._id) {
-            const path = `../../assets/objects/${object?.type}/${object.name}${object.orientation? "_"+ object.orientation : ''}.png`;
+            const path = `../../assets/objects/${isAvatar ? 'avatar' : object?.type}/${isAvatar ? object.avatar : object.name}${object.orientation? "_"+ object.orientation : ''}.png`;
             const imageUrl = new URL(path, import.meta.url);
 
             if(mobile){
@@ -128,6 +130,13 @@ export const RoomObjects : React.FC<RoomObjectsProps> = ({objects, enterRoom}) =
         return style;
     }
 
+    const getName = (user: any) => {
+        if(user?.name){
+            return user.name.split(' ')[0];
+        }
+        return '';
+    }
+
     return (
         <div className="container-objects">
             <div className="center">
@@ -135,15 +144,27 @@ export const RoomObjects : React.FC<RoomObjectsProps> = ({objects, enterRoom}) =
                     {
                         objects?.map((object: any) => 
                             <img key={object._id} 
-                                src={getImageFromObject(object)}
+                                src={getImageFromObject(object, false)}
                                 className={getClassFromObject(object)}
                                 style={getObjectStyle(object)}
                                 />)
                     }
-                    <div className="preview">
+                    {
+                        connectedUsers?.map((user: any) =>
+                        <div key={user._id} className={'user-avatar ' + getClassFromObject(user)}>
+                            <div>
+                                <span>{getName(user)}</span>
+                            </div>
+                            <img 
+                                src={getImageFromObject(user, true)}
+                                style={getObjectStyle(user)}
+                                />
+                        </div>)
+                    }
+                    {(!connectedUsers || connectedUsers?.length === 0) && <div className="preview">
                         <img src={linkIcon} alt="Entrar na sala"/>
                         <button onClick={enterRoom}>Entrar na sala</button>
-                    </div>
+                    </div>}
                 </div>
             </div>
         </div>

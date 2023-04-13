@@ -4,8 +4,10 @@ import copyIcon from '../../assets/images/copy.svg';
 import { useNavigate, useParams } from "react-router-dom";
 import { RoomObjects } from "./RoomObjects";
 import { RoomServices } from "../../services/RoomServices";
+import { createPeerConnectionContext } from "../../services/WebSocketServices";
 
 const roomServices = new RoomServices();
+const wsServices = createPeerConnectionContext();
 
 export const RoomHome = () => {
 
@@ -13,7 +15,11 @@ export const RoomHome = () => {
     const [name, setName] = useState('');
     const [color, setColor] = useState('');
     const [objects, setObjects] = useState([]);
+    const [connectedUsers, setConnectedUsers] = useState([]);
+    const [me, setMe] = useState<any>({});
+
     const { link } = useParams();
+    const userId = localStorage.getItem('id') || '';
 
     const getRoom = async () => {
         try{
@@ -48,7 +54,30 @@ export const RoomHome = () => {
 
 
     const enterRoom = () => {
+        if(!link || !userId){
+            return navigate('/');
+        }
 
+        wsServices.joinRoom(link, userId);
+        wsServices.onUpdateUserList(async(users: any) => {
+            if(users){
+                setConnectedUsers(users);
+                localStorage.setItem('connectedUsers', JSON.stringify(users));
+
+                const me = users.find((u:any) => u.user === userId);
+                if(me){
+                    setMe(me);
+                    localStorage.setItem('me', JSON.stringify(me));
+                }
+            }
+        });
+
+        wsServices.onRemoveUser((socketId: any) => {
+            const connectedStr = localStorage.getItem('connectedUsers') || '';
+            const connectedUsers = JSON.parse(connectedStr);
+            const filtered = connectedUsers?.filter((u:any) => u.clientId !== socketId);
+            setConnectedUsers(filtered);
+        })
     }
 
     const copyLink = () => {
@@ -71,7 +100,10 @@ export const RoomHome = () => {
                             </div>
                             <RoomObjects 
                                 objects={objects}
-                                enterRoom={enterRoom}/>
+                                enterRoom={enterRoom}
+                                connectedUsers={connectedUsers}
+                                me={me}
+                                />
                         </>
 
                         :
