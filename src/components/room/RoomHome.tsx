@@ -140,6 +140,8 @@ export const RoomHome = () => {
 
             wsServices.callUser(user);
         });
+
+        wsServices.onAnswerMade((socket:any) => wsServices.callUser(socket));
     }
 
     const toggleMute = () => {

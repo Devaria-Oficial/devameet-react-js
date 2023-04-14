@@ -50,26 +50,20 @@ class PeerConnectionSession {
             this.peerConnections[id] = new window.RTCPeerConnection({
                 iceServers : [{urls: 'stun:stun.l.google.com:19302'}]
             });
-            console.log('criou o peer,', id);
 
             stream.getTracks().forEach((track: any) => {
                 this.senders.push(this.peerConnections[id].addTrack(track, stream));
             });
-            console.log('adicionou o track');
 
             this.listener[id] = (event: any) => {
                 const on = '_on' + capitalizeFirstLetter(this.peerConnections[id].connectionState);
                 const fn = this.ons[on];
                 fn && fn(event, id);
             }
-            console.log('adicionou o listener', id);
 
             this.peerConnections[id].addEventListener('connectionstatechange', this.listener[id]);
 
-            console.log('adicionou o addEventListener', id);
-
             this.peerConnections[id].ontrack = ({streams: [stream]}: any) => {
-                console.log('entrou na callback', id);
                 callback(stream);
             }
         }
@@ -105,16 +99,24 @@ class PeerConnectionSession {
             
             const selectedPeer = this.peerConnections[data.socket];
             if(selectedPeer){
-                await selectedPeer.setLocalDescription(new RTCSessionDescription(data.offer));
-                //const answer = await selectedPeer.createAnswer();
-                //await selectedPeer.setLocalDescription(new RTCSessionDescription(answer));
-                // this.socket.emit('make-answerr', {
-                //     answer, 
-                //     to: data.socket, 
-                //     link: this._room
-                // });
+                await selectedPeer.setRemoteDescription(new RTCSessionDescription(data.offer));
+                const answer = await selectedPeer.createAnswer();
+                await selectedPeer.setLocalDescription(new RTCSessionDescription(answer));
+                this.socket.emit('make-answer', {
+                    answer, 
+                    to: data.socket, 
+                    link: this._room
+                });
             }
         });
+    }
+
+    onAnswerMade(callback: any){
+        this.socket.on('answer-made', async(data: any) => {
+            console.log('answer-made:', data.socket);
+            await this.peerConnections[data.socket].setRemoteDescription(new RTCSessionDescription(data.answer));
+            callback(data.socket);
+        })
     }
 }
 
