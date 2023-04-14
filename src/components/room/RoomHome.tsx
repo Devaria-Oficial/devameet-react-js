@@ -10,9 +10,12 @@ import iconUp from '../../assets/images/chevron_up.svg';
 import iconLeft from '../../assets/images/chevron_left.svg';
 import iconRight from '../../assets/images/chevron_right.svg';
 import iconDown from '../../assets/images/chevron_down.svg';
+import { Modal } from "react-bootstrap";
 
 const roomServices = new RoomServices();
 const wsServices = createPeerConnectionContext();
+
+let userMediaStream: any;
 
 export const RoomHome = () => {
 
@@ -22,6 +25,7 @@ export const RoomHome = () => {
     const [objects, setObjects] = useState([]);
     const [connectedUsers, setConnectedUsers] = useState([]);
     const [me, setMe] = useState<any>({});
+    const [showModal, setShowModal] = useState(false);
 
     const { link } = useParams();
     const userId = localStorage.getItem('id') || '';
@@ -49,6 +53,20 @@ export const RoomHome = () => {
             });
 
             setObjects(newObjects);
+
+            userMediaStream = await navigator?.mediaDevices?.getUserMedia({
+                video: {
+                    width: { min: 640, ideal: 1280 },
+                    height: { min: 400, ideal: 1080 },
+                    aspectRatio: { ideal: 1.777 }
+                },
+                audio: true
+            });
+
+            if (document.getElementById('localVideoRef')) {
+                const videoRef: any = document.getElementById('localVideoRef');
+                videoRef.srcObject = userMediaStream;
+            }
         } catch (e) {
             console.log('Ocorreu erro ao buscar dados da sala:', e);
         }
@@ -68,6 +86,10 @@ export const RoomHome = () => {
 
 
     const enterRoom = () => {
+        if (!userMediaStream) {
+            return setShowModal(true);
+        }
+
         if (!link || !userId) {
             return navigate('/');
         }
@@ -83,6 +105,16 @@ export const RoomHome = () => {
                     setMe(me);
                     localStorage.setItem('me', JSON.stringify(me));
                 }
+
+                const usersWithoutMe = users.filter((u: any) => u.user !== userId);
+                for(const user of usersWithoutMe){
+                    wsServices.addPeerConnection(user.clientId, userMediaStream, (_stream : any) => {
+                        if(document.getElementById(user.clientId)){
+                            const element : any = document.getElementById(user.clientId);
+                            element.srcObject = _stream;
+                        }
+                    });
+                }
             }
         });
 
@@ -92,6 +124,18 @@ export const RoomHome = () => {
             const connectedUsers = JSON.parse(connectedStr);
             const filtered = connectedUsers?.filter((u: any) => u.clientId !== socketId);
             setConnectedUsers(filtered);
+            wsServices.removePeerConnection(socketId);
+        });
+
+        wsServices.onAddUser((user: any) => {
+            wsServices.addPeerConnection(user, userMediaStream, (_stream : any) => {
+                if(document.getElementById(user)){
+                    const element : any = document.getElementById(user);
+                    element.srcObject = _stream;
+                }
+            });
+
+            wsServices.callUser(user);
         })
     }
 
@@ -155,7 +199,7 @@ export const RoomHome = () => {
                 default: break;
             }
 
-            if(payload.x >= 0 && payload.y >=0 && payload.orientation){
+            if (payload.x >= 0 && payload.y >= 0 && payload.orientation) {
                 wsServices.updateUserMovement(payload);
             }
         }
@@ -165,53 +209,77 @@ export const RoomHome = () => {
         navigator.clipboard.writeText(window.location.href);
     }
 
-    return (
-        <div className="container-principal">
-            <div className="container-room">
-                {
-                    objects?.length > 0
-                        ?
-                        <>
-                            <div className="resume">
-                                <div onClick={copyLink}>
-                                    <span><strong>Reunião</strong> {link}</span>
-                                    <img src={copyIcon} />
-                                </div>
-                                <p style={{ color }}>{name}</p>
-                            </div>
-                            <RoomObjects
-                                objects={objects}
-                                enterRoom={enterRoom}
-                                connectedUsers={connectedUsers}
-                                me={me}
-                                toggleMute={toggleMute}
-                            />
-                            {mobile && me?.user &&
-                                <div className="movement">
-                                    <div className="button" onClick={() => doMovement({ key: 'ArrowUp' })}>
-                                        <img src={iconUp} alt="Andar para cima" />
-                                    </div>
-                                    <div className="line">
-                                        <div className="button" onClick={() => doMovement({ key: 'ArrowLeft' })}>
-                                            <img src={iconLeft} alt="Andar para esquerda" />
-                                        </div>
-                                        <div className="button" onClick={() => doMovement({ key: 'ArrowDown' })}>
-                                            <img src={iconDown} alt="Andar para baixo" />
-                                        </div>
-                                        <div className="button" onClick={() => doMovement({ key: 'ArrowRight' })}>
-                                            <img src={iconRight} alt="Andar para direita" />
-                                        </div>
-                                    </div>
-                                </div>}
-                        </>
+    const getUsersWithoutMe = () => {
+        return connectedUsers.filter((u: any) => u.user !== userId);
+    }
 
-                        :
-                        <div className="empty">
-                            <img src={emptyIcon} />
-                            <p>Reunião não encontrada :/</p>
-                        </div>
-                }
+    return (
+        <>
+            <div className="container-principal">
+                <div className="container-room">
+                    {
+                        objects?.length > 0
+                            ?
+                            <>
+                                <div className="resume">
+                                    <div onClick={copyLink}>
+                                        <span><strong>Reunião</strong> {link}</span>
+                                        <img src={copyIcon} />
+                                    </div>
+                                    <p style={{ color }}>{name}</p>
+                                    <audio id="localVideoRef" autoPlay playsInline muted />
+                                    {getUsersWithoutMe()?.map((user:any) => <audio key={user.clientId} id={user.clientId} autoPlay playsInline muted={user?.muted} />)}
+                                </div>
+                                <RoomObjects
+                                    objects={objects}
+                                    enterRoom={enterRoom}
+                                    connectedUsers={connectedUsers}
+                                    me={me}
+                                    toggleMute={toggleMute}
+                                />
+                                {mobile && me?.user &&
+                                    <div className="movement">
+                                        <div className="button" onClick={() => doMovement({ key: 'ArrowUp' })}>
+                                            <img src={iconUp} alt="Andar para cima" />
+                                        </div>
+                                        <div className="line">
+                                            <div className="button" onClick={() => doMovement({ key: 'ArrowLeft' })}>
+                                                <img src={iconLeft} alt="Andar para esquerda" />
+                                            </div>
+                                            <div className="button" onClick={() => doMovement({ key: 'ArrowDown' })}>
+                                                <img src={iconDown} alt="Andar para baixo" />
+                                            </div>
+                                            <div className="button" onClick={() => doMovement({ key: 'ArrowRight' })}>
+                                                <img src={iconRight} alt="Andar para direita" />
+                                            </div>
+                                        </div>
+                                    </div>}
+                            </>
+
+                            :
+                            <div className="empty">
+                                <img src={emptyIcon} />
+                                <p>Reunião não encontrada :/</p>
+                            </div>
+                    }
+                </div>
             </div>
-        </div>
+            <Modal
+                show={showModal}
+                onHide={() => setShowModal(false)}
+                className="container-modal">
+                <Modal.Body>
+                    <div className="content">
+                        <div className="container">
+                            <p>Aviso!</p>
+                            <span>Habilite a câmera para entrar na reunião</span>
+                        </div>
+                        <div className="actions">
+                            <button onClick={() => setShowModal(false)}>Ok</button>
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal>
+        </>
     );
 }
